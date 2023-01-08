@@ -7,4 +7,4 @@ py==1.11.0
 pytest==3.0.6
 Werkzeug==2.0.2
 flake8
-Collections
+collections
