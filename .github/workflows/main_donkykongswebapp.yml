@@ -30,7 +30,14 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
         
-      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
+      - name: Lint with flake8
+        run: |
+          flake8 ./buzz/generator.py ./app.py --count --select=E9,F63,F7,F82 --show-source --statistics --ignore=F821 
+          flake8 ./buzz/generator.py ./app.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Test with pytest
+        run: | 
+          python -m pytest -v tests/test_generator.py
+
       
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v2
@@ -61,10 +68,3 @@ jobs:
           app-name: 'donkykongswebapp'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_10FF122D29AE4412906ECC279950BF5E }}
-      - name: Lint with flake8
-        run: |
-          flake8 ./buzz/generator.py ./app.py --count --select=E9,F63,F7,F82 --show-source --statistics --ignore=F821 
-          flake8 ./buzz/generator.py ./app.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-      - name: Test with pytest
-        run: | 
-          python -m pytest -v tests/test_generator.py
